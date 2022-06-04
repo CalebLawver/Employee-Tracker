@@ -15,3 +15,55 @@ connection.connect(err => {
     console.log('Connected with ID ' + connection.threadId);
     connected();
 });
+
+connect = () => {
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    console.log("        EMPLOYEE TRACKER        ")
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    prompt();
+};
+
+const prompt = () => {
+    inquirer.prompt([
+        {
+
+        }
+    ])
+    .then((answers) => {
+
+    });
+};
+
+showDepartment = () => {
+
+}
+
+showRole() = () => {
+
+}
+
+showEmployees() = () => {
+
+}
+
+addDepartment() = () => {
+    inquirer.prompt([
+        {
+
+        }
+    ])
+    .then(createdDep => {
+
+    })
+}
+
+addEmployee() = () => {
+    inquirer.prompt([
+        {
+
+        }
+    ])
+    .then(answer => {
+        
+    })
+}
