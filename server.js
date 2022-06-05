@@ -264,6 +264,7 @@ addEmp = () => {
         if (err) throw err;
 
         const roles = data.map(({ id, title }) => ({ name: title, value: id }));
+        console.log(roles);
 
         inquirer
           .prompt([
@@ -271,22 +272,20 @@ addEmp = () => {
               type: "list",
               name: "role",
               message: "What is the employee's role?",
-              choices: roles,
+              choices: roles
             },
           ])
           .then((roleList) => {
-            const role = roleList.roles;
+            const role = roleList.role;
             params.push(role);
+            console.log(roleList);
 
             const managerSql = `SELECT * FROM employee`;
 
             connection.query(managerSql, (err, data) => {
               if (err) throw err;
 
-              const managers = data.map(({ id, first_name, last_name }) => ({
-                name: first_name + " " + last_name,
-                value: id,
-              }));
+              const managers = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
 
               inquirer
                 .prompt([
@@ -304,6 +303,7 @@ addEmp = () => {
                   const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
 
                   connection.query(sql, params, (err, result) => {
+                      console.log(params);
                     if (err) throw err;
                     console.log("Employee has been added");
                     showEmployee();
@@ -359,7 +359,7 @@ updateEmp = () => {
               },
             ])
             .then((roleChoice) => {
-              const role = roleChoice.roles;
+              const role = roleChoice.role;
               params.push(role);
 
               let employee = params[0];
@@ -527,4 +527,13 @@ deleteEmp = () => {
     })
 };
 
-viewBudget = () => {};
+viewBudget = () => {
+    console.log('Showing budget by department');
+    const sql = `SELECT department_id, department.name AS department, SUM(salary) AS budget FROM roles JOIN department ON roles.department_id = department.id GROUP BY department_id`;
+
+    connection.query(sql, (err, rows) => {
+        if (err) throw err;
+        console.table(rows);
+        prompt();
+    })
+};
