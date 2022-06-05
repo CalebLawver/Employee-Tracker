@@ -14,7 +14,7 @@ VALUES
 ('Marketing Coordindator', 70000, 3), 
 ('Sales Lead', 97000, 3),
 ('Onboarding Manager', 75000, 4),
-('Customer Service Representative', 35000, 4);
+('Customer Service Rep', 35000, 4);
 
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)

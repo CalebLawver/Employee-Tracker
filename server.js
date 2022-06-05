@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
 connection.connect(err => {
     if(err) throw err;
     console.log('Connected with ID ' + connection.threadId);
-    connected();
+    connect();
 });
 
 connect = () => {
@@ -48,6 +48,8 @@ const prompt = () => {
         }
     ])
     .then((answers) => {
+        const { choices } = answers;
+
         if(choices === 'View all departments') {
             showDepartment();
         }
@@ -97,12 +99,12 @@ showDepartment = () => {
     console.log('Showing departments');
     const sql = `SELECT department.id, department.name AS department FROM department`;
 
-    connection.promise().query(sql, (err, rows) => {
+    connection.query(sql, (err, rows) => {
         if (err) throw err;
         console.table(rows)
         prompt();
-    })
-}
+    });
+};
 
 showRole = () => {
 
