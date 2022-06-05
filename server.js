@@ -107,8 +107,15 @@ showDepartment = () => {
 };
 
 showRole = () => {
+    console.log('Showing roles');
+    const sql = `SELECT roles.id, roles.title, department.name AS department FROM roles INNER JOIN department ON roles.department_id = department.id`
 
-}
+    connection.query(sql, (err, rows) => {
+        if (err) throw err;
+        console.table(rows);
+        prompt();
+    });
+};
 
 showEmployees = () => {
 
