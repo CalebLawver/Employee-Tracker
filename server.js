@@ -117,19 +117,108 @@ showRole = () => {
     });
 };
 
-showEmployees = () => {
+showEmployee = () => {
+    console.log('Showing employees');
+    const sql = `SELECT employee.id, employee.first_name, employee.last_name, roles.title, department.name AS department, roles.salary, 
+                concat (manager.first_name, " ", manager.last_name) AS manager FROM employee LEFT JOIN roles ON employee.role_id = roles.id LEFT JOIN department ON roles.department_id = department.id
+                LEFT JOIN employee manager ON employee.manager_id = manager.id`;
 
+    connection.query(sql, (err, rows) => {
+        if (err) throw err;
+        console.table(rows);
+        prompt();
+    })
 }
 
 addDepartment = () => {
     inquirer.prompt([
         {
-
+            type: 'input',
+            name: 'addDept',
+            message: 'What department are you adding?',
+            validate: addDept => {
+                if (addDept) {
+                    return true;
+                } else {
+                    console.log('Please enter a department');
+                    return false;
+                }
+            }
         }
     ])
     .then(createdDep => {
+        const sql = `INSERT INTO department (name) VALUES (?)`;
 
+        connection.query(sql, createdDep.addDept, (err, result) => {
+            if (err) throw err;
+            console.log('You have added ' + createdDep.addDept + " to departments");
+
+            showDepartment();
+        })
     })
+}
+
+addRole = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'role',
+            message: 'What is the role you want to add?',
+            validate: addRole => {
+                if (addRole) {
+                    return true;
+                } else {
+                    console.log('Please enter a role');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is this roles salary?',
+            validate: addSal => {
+                if (isNaN(addSal)) {
+                    console.log('Please enter a salary');
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+    ])
+    .then(addedRole => {
+        const params = [addedRole.role, addedRole.salary];
+
+        const roleSql = `SELECT name, id FROM department`;
+
+        connection.query(roleSql, (err, data) => {
+            if (err) throw err;
+
+            const dept = data.map(({ name, id }) => ({ name: name, value: id}));
+
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'dept',
+                    message: 'What department is this role in?',
+                    choices: dept
+                }
+            ])
+            .then(deptChoice => {
+                const dept = deptChoice.dept ;
+                params.push(dept);
+
+                const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)`;
+
+                connection.query(sql, params, (err, result) => {
+                    if (err) throw err;
+                    console.log('You have added ' + addedRole.role + ' to roles.');
+                    showRole();
+                });
+            });
+        });
+    });
 }
 
 addEmp = () => {
