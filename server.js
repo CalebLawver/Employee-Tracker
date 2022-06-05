@@ -26,7 +26,25 @@ connect = () => {
 const prompt = () => {
     inquirer.prompt([
         {
-
+            type: 'list',
+            name: 'choices',
+            message: 'What do you want to do?',
+            choices: 
+            ['View all departments',
+            'View all roles',
+            'View all employees',
+            'Add a department',
+            'Add a role',
+            'Add an employee',
+            "Update an employee's role",
+            "Update an employee's manager",
+            "View employee's by department",
+            'Delete a department',
+            'Delete a role',
+            'Delete an employee',
+            'View department budgets',
+            'Nothing at this time!'
+            ]
         }
     ])
     .then((answers) => {
@@ -66,4 +84,24 @@ addEmployee() = () => {
     .then(answer => {
         
     })
+}
+
+employeeDep = () => {
+
+}
+
+deleteDep = () => {
+
+}
+
+deleteRole = () => {
+
+}
+
+deleteEmp = () => {
+
+}
+
+viewBudget = () => {
+
 }
