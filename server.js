@@ -48,23 +48,71 @@ const prompt = () => {
         }
     ])
     .then((answers) => {
-
+        if(choices === 'View all departments') {
+            showDepartment();
+        }
+        if (choices === "View all roles") {
+            showRole();
+        }
+        if (choices === "View all employees") {
+            showEmployee();
+        }
+        if (choices === "Add a department") {
+            addDepartment();
+        }
+        if (choices === "Add a role") {
+            addRole();
+        }
+        if (choices === "Add an employee") {
+            addEmp();
+        }
+        if (choices === "Update an employee role") {
+            updateEmp();
+        }
+        if (choices === "Update an employee manager") {
+            updateManager();
+        }
+        if (choices === "View employees by department") {
+            employeeDep();
+        }
+        if (choices === "Delete a department") {
+            deleteDep();
+        }
+        if (choices === "Delete a role") {
+            deleteRole();
+        }
+        if (choices === "Delete an employee") {
+            deleteEmp();
+        }
+        if (choices === "View department budgets") {
+            viewBudget();
+        }
+        if (choices === "No Action") {
+            connection.end()
+        };
     });
 };
 
 showDepartment = () => {
+    console.log('Showing departments');
+    const sql = `SELECT department.id, department.name AS department FROM department`;
+
+    connection.promise().query(sql, (err, rows) => {
+        if (err) throw err;
+        console.table(rows)
+        prompt();
+    })
+}
+
+showRole = () => {
 
 }
 
-showRole() = () => {
+showEmployees = () => {
 
 }
 
-showEmployees() = () => {
-
-}
-
-addDepartment() = () => {
+addDepartment = () => {
     inquirer.prompt([
         {
 
@@ -75,7 +123,7 @@ addDepartment() = () => {
     })
 }
 
-addEmployee() = () => {
+addEmp = () => {
     inquirer.prompt([
         {
 
@@ -84,6 +132,14 @@ addEmployee() = () => {
     .then(answer => {
         
     })
+}
+
+updateEmp = () => {
+
+}
+
+updateManager = () => {
+
 }
 
 employeeDep = () => {
