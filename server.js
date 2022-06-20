@@ -91,6 +91,9 @@ const prompt = () => {
         viewBudget();
       }
       if (choices === "Nothing at this time!") {
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        console.log("           Thank you!           ");
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         connection.end();
       }
     });
@@ -264,7 +267,6 @@ addEmp = () => {
         if (err) throw err;
 
         const roles = data.map(({ id, title }) => ({ name: title, value: id }));
-        console.log(roles);
 
         inquirer
           .prompt([
@@ -473,7 +475,7 @@ deleteDep = () => {
 };
 
 deleteRole = () => {
-    const roleSql = `SELECT * FROM role`;
+    const roleSql = `SELECT * FROM roles`;
     connection.query(roleSql, (err, data) => {
         if (err) throw err;
         const role = data.map(({ title, id }) => ({ name: title, value: id }));
@@ -488,7 +490,7 @@ deleteRole = () => {
         ])
         .then(roleChoice => {
             const role = roleChoice.role;
-            const sql = `DELETE FROM role WHERE id = ?`;
+            const sql = `DELETE FROM roles WHERE id = ?`;
 
             connection.query(sql, role, (err, result) => {
                 if (err) throw err;
@@ -502,7 +504,7 @@ deleteRole = () => {
 deleteEmp = () => {
     const empSql = `SELECT * FROM employee`;
 
-    connection.query(sql, employee, (err, result) => {
+    connection.query(empSql, (err, data) => {
         if (err) throw err;
         
         const employees = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
